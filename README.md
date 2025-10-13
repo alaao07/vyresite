@@ -3,6 +3,8 @@
 A modern, responsive landing page inspired by [BoltBot.app](https://boltbot.app), built entirely with **HTML**, **CSS**, and **vanilla JavaScript** — no frameworks or dependencies.  
 Designed with a soft green pastel theme for a clean, minimal look.
 
+[Vyre's Site]
+
 
 ---
 
@@ -15,7 +17,6 @@ Designed with a soft green pastel theme for a clean, minimal look.
 - 🧼 Minimal JS for smooth interaction  
 - 🖼️ SVG-based logo and icons (no external assets)  
 - 🧠 Optimized structure and color contrast for accessibility  
-- 🌐 Ready to deploy on any static hosting (GitHub Pages, Vercel, Netlify)
 
 ---
 
