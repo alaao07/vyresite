@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Vyre - Your AI-powered Discord bot with community memory and intelligent context">
+    <title>Vyre - AI Discord Bot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --g-50: #f0fbf6;
+            --g-100: #e1f7ed;
+            --g-200: #d8f3e6;
+            --g-300: #a8e6c5;
+            --g-400: #78d9a4;
+            --g-500: #66c08a;
+            --g-600: #4da870;
+            --g-700: #2d8a55;
+            --g-800: #1f6b40;
+            --g-900: #154d2e;
+            
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            
+            --font-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            
+            --space-xs: 0.5rem;
+            --space-sm: 0.75rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+            --space-2xl: 3rem;
+            --space-3xl: 4rem;
+            --space-4xl: 6rem;
+            
+            --text-xs: 0.75rem;
+            --text-sm: 0.875rem;
+            --text-base: 1rem;
+            --text-lg: 1.125rem;
+            --text-xl: 1.25rem;
+            --text-2xl: 1.5rem;
+            --text-3xl: 1.875rem;
+            --text-4xl: 2.25rem;
+            --text-5xl: 3rem;
+            --text-6xl: 3.75rem;
+            
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --radius-2xl: 1.5rem;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-base);
+            font-size: var(--text-base);
+            line-height: 1.6;
+            color: var(--gray-800);
+            background: var(--g-50);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+        }
+        
+        header {
+            background: white;
+            border-bottom: 1px solid var(--g-200);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-lg) 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: var(--text-xl);
+            font-weight: 700;
+            color: var(--g-700);
+            text-decoration: none;
+        }
+        
+        .logo svg {
+            width: 32px;
+            height: 32px;
+        }
+        
+        .nav-links {
+            display: none;
+            gap: var(--space-xl);
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--gray-700);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: var(--text-sm);
+            transition: color 0.2s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--g-700);
+        }
+        
+        .nav-cta {
+            display: none;
+        }
+        
+        .mobile-menu-btn {
+            display: block;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: var(--space-xs);
+        }
+        
+        .mobile-menu-btn svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--gray-700);
+        }
+        
+        .mobile-nav {
+            display: none;
+            flex-direction: column;
+            gap: var(--space-md);
+            padding: var(--space-lg) 0;
+            border-top: 1px solid var(--g-200);
+        }
+        
+        .mobile-nav.active {
+            display: flex;
+        }
+        
+        .mobile-nav a {
+            color: var(--gray-700);
+            text-decoration: none;
+            font-weight: 500;
+            padding: var(--space-sm) 0;
+        }
+        
+        .hero {
+            padding: var(--space-4xl) 0;
+            text-align: center;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto var(--space-xl);
+        }
+        
+        .hero h1 {
+            font-size: var(--text-4xl);
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: var(--space-lg);
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: var(--text-lg);
+            color: var(--gray-600);
+            margin-bottom: var(--space-2xl);
+            line-height: 1.7;
+        }
+        
+        .hero-ctas {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+            align-items: center;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+            padding: var(--space-md) var(--space-xl);
+            font-size: var(--text-base);
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: var(--radius-2xl);
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: var(--font-base);
+        }
+        
+        .btn-primary {
+            background: var(--g-600);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-primary:hover {
+            background: var(--g-700);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-1px);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-primary:focus-visible {
+            outline: 3px solid var(--g-300);
+            outline-offset: 2px;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: var(--g-700);
+            border: 2px solid var(--g-300);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--g-50);
+            border-color: var(--g-500);
+        }
+        
+        .btn-secondary:active {
+            background: var(--g-100);
+        }
+        
+        .btn-secondary:focus-visible {
+            outline: 3px solid var(--g-300);
+            outline-offset: 2px;
+        }
+        
+        .features {
+            padding: var(--space-4xl) 0;
+            background: white;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--space-3xl);
+        }
+        
+        .section-header h2 {
+            font-size: var(--text-3xl);
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: var(--space-md);
+        }
+        
+        .section-header p {
+            font-size: var(--text-lg);
+            color: var(--gray-600);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-xl);
+        }
+        
+        .feature-card {
+            background: var(--g-50);
+            padding: var(--space-xl);
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--g-200);
+            transition: all 0.3s;
+        }
+        
+        .feature-card:hover {
+            border-color: var(--g-400);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+        
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--g-200);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--space-lg);
+        }
+        
+        .feature-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--g-700);
+        }
+        
+        .feature-card h3 {
+            font-size: var(--text-xl);
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .feature-card p {
+            color: var(--gray-600);
+            line-height: 1.7;
+        }
+        
+        .faq {
+            padding: var(--space-4xl) 0;
+            background: var(--g-50);
+        }
+        
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            background: white;
+            border: 1px solid var(--g-200);
+            border-radius: var(--radius-xl);
+            margin-bottom: var(--space-md);
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            width: 100%;
+            padding: var(--space-lg);
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: var(--text-lg);
+            font-weight: 600;
+            color: var(--gray-900);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--font-base);
+            transition: background 0.2s;
+        }
+        
+        .faq-question:hover {
+            background: var(--g-50);
+        }
+        
+        .faq-question:focus-visible {
+            outline: 3px solid var(--g-300);
+            outline-offset: -3px;
+        }
+        
+        .faq-icon {
+            width: 20px;
+            height: 20px;
+            stroke: var(--g-700);
+            transition: transform 0.3s;
+        }
+        
+        .faq-item[aria-expanded="true"] .faq-icon {
+            transform: rotate(180deg);
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .faq-answer-content {
+            padding: 0 var(--space-lg) var(--space-lg);
+            color: var(--gray-600);
+            line-height: 1.7;
+        }
+        
+        footer {
+            background: white;
+            border-top: 1px solid var(--g-200);
+            padding: var(--space-2xl) 0;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+            align-items: center;
+            text-align: center;
+        }
+        
+        .footer-version {
+            font-size: var(--text-sm);
+            color: var(--gray-600);
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: var(--space-lg);
+            list-style: none;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .footer-links a {
+            color: var(--gray-600);
+            text-decoration: none;
+            font-size: var(--text-sm);
+            transition: color 0.2s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--g-700);
+        }
+        
+        @media (min-width: 640px) {
+            .hero-ctas {
+                flex-direction: row;
+                justify-content: center;
+            }
+            
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .mobile-menu-btn {
+                display: none;
+            }
+            
+            .nav-links {
+                display: flex;
+            }
+            
+            .nav-cta {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: var(--text-5xl);
+            }
+            
+            .footer-content {
+                flex-direction: row;
+                justify-content: space-between;
+                text-align: left;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .hero h1 {
+                font-size: var(--text-6xl);
+            }
+            
+            .features-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav role="navigation" aria-label="Main navigation">
+                <a href="#" class="logo" aria-label="Vyre home">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="40" fill="currentColor" opacity="0.2"/>
+                        <path d="M30 35 L50 65 L70 35" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Vyre</span>
+                </a>
+                
+                <ul class="nav-links">
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#support">Support</a></li>
+                </ul>
+                
+                <a href="#" class="btn btn-primary nav-cta" id="navAddBtn" aria-label="Add Vyre to Discord">
+                    Add to Discord
+                </a>
+                
+                <button class="mobile-menu-btn" aria-label="Toggle menu" aria-expanded="false" id="mobileMenuBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </nav>
+            
+            <div class="mobile-nav" id="mobileNav">
+                <a href="#features">Features</a>
+                <a href="#faq">FAQ</a>
+                <a href="#support">Support</a>
+                <a href="#" class="btn btn-primary" id="mobileAddBtn" style="margin-top: 0.5rem;">Add to Discord</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <svg class="hero-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="45" fill="#66c08a" opacity="0.15"/>
+                        <circle cx="50" cy="50" r="35" fill="#66c08a" opacity="0.25"/>
+                        <path d="M30 35 L50 65 L70 35" stroke="#2d8a55" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    
+                    <h1>Your Server's Intelligent Memory</h1>
+                    <p>Vyre transforms Discord conversations into searchable knowledge. Never lose valuable discussions again - your community's collective wisdom, always accessible.</p>
+                    
+                    <div class="hero-ctas">
+                        <a href="#" class="btn btn-primary" id="heroAddBtn" aria-label="Add Vyre bot to your Discord server">
+                            Add to Discord
+                        </a>
+                        <a href="#features" class="btn btn-secondary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features" id="features">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Powerful AI Features</h2>
+                    <p>Everything you need to unlock your community's knowledge</p>
+                </div>
+                
+                <div class="features-grid">
+                    <article class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                        </div>
+                        <h3>Context-Aware Search</h3>
+                        <p>Ask questions naturally and get instant answers from your server's history. Vyre understands context and surfaces the most relevant conversations.</p>
+                    </article>
+                    
+                    <article class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                        </div>
+                        <h3>Auto Knowledge Base</h3>
+                        <p>Vyre automatically identifies and organizes important information, building a living wiki from your community's discussions.</p>
+                    </article>
+                    
+                    <article class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                        </div>
+                        <h3>Smart Onboarding</h3>
+                        <p>New members get personalized guidance based on their questions. Vyre proactively helps newcomers find what they need.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq" id="faq">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Frequently Asked Questions</h2>
+                    <p>Everything you need to know about Vyre</p>
+                </div>
+                
+                <div class="faq-list">
+                    <div class="faq-item" role="region" aria-expanded="false">
+                        <button class="faq-question" aria-label="How does Vyre access my server history?">
+                            <span>How does Vyre access my server history?</span>
+                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                Vyre indexes messages as they're sent and can optionally process historical messages upon setup. All data is encrypted and stored securely in compliance with Discord's Terms of Service and privacy regulations.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item" role="region" aria-expanded="false">
+                        <button class="faq-question" aria-label="Is my data private and secure?">
+                            <span>Is my data private and secure?</span>
+                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                Absolutely. Your server data is encrypted, isolated per-server, and never shared with third parties. You maintain full control and can delete all data at any time through our dashboard.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item" role="region" aria-expanded="false">
+                        <button class="faq-question" aria-label="What are the pricing plans?">
+                            <span>What are the pricing plans?</span>
+                            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                Vyre offers a free tier for small servers with basic features. Premium plans start at $5/month and include full history search, advanced analytics, and priority support. Enterprise options are available for large communities.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p class="footer-version">Vyre v1.0.0</p>
+                <ul class="footer-links">
+                    <li><a href="#privacy">Privacy Policy</a></li>
+                    <li><a href="#terms">Terms of Service</a></li>
+                    <li><a href="#support" id="support">Support</a></li>
+                    <li><a href="#docs">Documentation</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const DISCORD_INVITE_URL = 'https://discord.com/api/oauth2/authorize?client_id=YOUR_CLIENT_ID&permissions=YOUR_PERMISSIONS&scope=bot%20applications.commands';
+        
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileNav = document.getElementById('mobileNav');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            const isOpen = mobileNav.classList.contains('active');
+            mobileNav.classList.toggle('active');
+            mobileMenuBtn.setAttribute('aria-expanded', !isOpen);
+        });
+        
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            const button = item.querySelector('.faq-question');
+            const answer = item.querySelector('.faq-answer');
+            
+            button.addEventListener('click', () => {
+                const isExpanded = item.getAttribute('aria-expanded') === 'true';
+                
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.setAttribute('aria-expanded', 'false');
+                        otherItem.querySelector('.faq-answer').style.maxHeight = '0';
+                    }
+                });
+                
+                item.setAttribute('aria-expanded', !isExpanded);
+                
+                if (!isExpanded) {
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                } else {
+                    answer.style.maxHeight = '0';
+                }
+            });
+            
+            button.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    button.click();
+                }
+            });
+        });
+        
+        document.getElementById('heroAddBtn').href = DISCORD_INVITE_URL;
+        document.getElementById('navAddBtn').href = DISCORD_INVITE_URL;
+        document.getElementById('mobileAddBtn').href = DISCORD_INVITE_URL;
+    </script>
+</body>
+</html>
