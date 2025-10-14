@@ -14,7 +14,7 @@ const faqs = [
   },
   {
     question: 'Can I customize Vyre for my server?',
-    answer: 'Yes! Through the dashboard you can configure response styles, set custom commands, manage permissions, and tailor Vyre to fit your community's unique needs.'
+    answer: 'Yes! Through the dashboard you can configure response styles, set custom commands, manage permissions, and tailor Vyre to fit your community needs.'
   }
 ]
 
