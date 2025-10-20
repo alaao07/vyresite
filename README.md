@@ -1,6 +1,6 @@
 # Vyre Landing Page
 
-A modern, responsive landing page inspired by [BoltBot.app](https://boltbot.app), built entirely with **HTML**, **CSS**, and **vanilla JavaScript** — no frameworks or dependencies.  
+A modern, responsive landing page inspired by [BoltBot.app](https://boltbot.app), built entirely with **HTML**, no frameworks or dependencies.  
 Designed with a soft green pastel theme for a clean, minimal look.
 
 [Vyre's Site]
@@ -22,6 +22,5 @@ Designed with a soft green pastel theme for a clean, minimal look.
 
 ## 🧰 Tech Stack
 
-- **HTML5** — semantic structure  
-- **CSS3** — custom variables, responsive grid & typography  
-- **JavaScript (ES6)** — minimal interactivity (menu & accordion)
+- **HTML5** semantic structure  
+
